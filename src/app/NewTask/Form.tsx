@@ -2,7 +2,7 @@
 import React, { useState } from "react"
 import { taskAction } from "./taskAction"
 import { useRouter } from "next/navigation"
-
+import styles from './styles.module.css'
 export interface TaskPros{
 initialData?:{id:number,title:string,description:string}
 }
@@ -49,18 +49,19 @@ setMessage("An error occurred while saving the task.")
 setPending(false)
 }}
 return(
-<form onSubmit={handleSubmit}>
-{message && <p style={{color: color==="red"?"#f50":"#284", fontSize: "0.9rem",
-backgroundColor:color==='red'?'#666':'#f1f1f1',borderRadius:'6px'}}>{message}</p>}
-<h2>{initialData?"Edit Task":"New Task"}</h2>
+<form onSubmit={handleSubmit} className={styles.main}>
+{message && <p className={`${styles.statusMessage} ${color==='red'?styles.red:styles.green}`}>{message}</p>}
+<div className={styles.card}>
+<h2 className={styles.title}>{initialData?"Edit Task":"New Task"}</h2>
 {initialData&&<input type="hidden" name="id" value={initialData.id}></input>}
-<label htmlFor="title"/>Title
+<label htmlFor="title"/>Title:
 <input id="title" name="title" type="text" required placeholder="Type the task title" 
 value={title} onChange={(ev)=>setTitle(ev.target.value)}/>
-<label htmlFor="description">Description</label>
+<label htmlFor="description">Description:</label>
 <textarea id="description" name="description" required placeholder="Type the task description" 
 value={description} onChange={(ev)=>setDescription(ev.target.value)}/>
-<button type="submit">{pending?"Saving":initialData?"Update Task":"Create Task"}</button>
+<button type="submit" className={styles.btn}>{pending?"Saving":initialData?"Update Task":"Create Task"}</button>
+</div>
 </form>
 )
 }
