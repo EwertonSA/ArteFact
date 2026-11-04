@@ -8,12 +8,15 @@ export const DeleteButton=({taskId}:{taskId:number})=>{
 const trpc=useTRPC()
 const router=useRouter()
 const queryClient=useQueryClient()
-const [errorMessage, setErrorMessage] = useState<string | null>(null)
+//const [message, setMessage] = useState<string | null>(null)
 const deleteTask= useMutation(trpc.task.delete.mutationOptions({onSuccess:()=>{
+window.alert("Task deleted successfully!")
 queryClient.invalidateQueries({queryKey:trpc.task.show.queryKey()})
-router.refresh()},
+router.refresh()
+
+},
 onError:(error)=>{
-setErrorMessage("Error while deleting this task!")
+window.alert("Error while deleting this task!")
 console.error(error)
 }
 }))
