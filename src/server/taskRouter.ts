@@ -1,9 +1,9 @@
 import z from "zod";
 import { taskSCreationSchema, taskUpdateSchema } from "./taskSchema";
-import { publicProcedure, t } from "./trpc";
+import { publicProcedure, router } from "./trpc";
 import { tasks } from "./database";
 
-export const TaskRouter=t.router({
+export const TaskRouter=router({
 show:publicProcedure.query(()=>{
 return tasks
 }),
@@ -15,7 +15,7 @@ description:input.description,createdAt:now, updatedAt:now}
 tasks.push(newTask)
 return newTask
 }),
-update:publicProcedure.input(z.object({id:z.number,data:taskUpdateSchema})).mutation(({input})=>{
+update:publicProcedure.input(z.object({id:z.number(),data:taskUpdateSchema})).mutation(({input})=>{
 const index=tasks.findIndex(task=>task.id===input.id)
 if(index===-1)throw new Error('Task not found')
 tasks[index]={
