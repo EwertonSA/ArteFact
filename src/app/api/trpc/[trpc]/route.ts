@@ -2,6 +2,6 @@ import { app } from "@/server/root"
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch"
 
 const handler=(req:Request)=>{
-fetchRequestHandler({endpoint:'/api/trpc', req, router:app, createContext: ()=>({}),})
+return fetchRequestHandler({endpoint:'/api/trpc', req, router:app, createContext: ()=>({}),})
 }
 export { handler as GET, handler as POST }
