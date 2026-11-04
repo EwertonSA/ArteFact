@@ -1,0 +1,43 @@
+.message{
+display: flex;
+justify-content: center;
+}
+.deleteMessage{
+position: fixed;
+top: 20px;
+left: 50%;    
+transform: translateX(-50%);
+z-index: 1000;
+font-size: 20px;
+padding: 6px 10px;
+border-radius: 6px;
+margin-bottom: 6px;
+border: 1px solid;  
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn {
+from { opacity: 0; transform: translate(-50%, -10px); }
+to { opacity: 1; transform: translate(-50%, 0); }
+}
+.green{
+color: #283;
+background-color: #666;
+border-color: #f1f1f1;
+}
+.red{
+color: #f20;
+background-color:#f1f1f1;
+border-color: #666;
+}
+.btn{
+  background-color:#f23;
+  color:#f1f1f1;
+  border: 1px solid white;
+  border-radius: 4px;
+  padding: 6px 10px;
+  transition: 0.3s;
+}
+.btn:hover{
+border:2px solid #666;
+}

@@ -1,0 +1,56 @@
+.main{
+
+
+}
+.title{
+display: flex;
+justify-content:center;
+padding-top: 20px;
+}
+.tasks{
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 20px;
+
+}
+.task{
+display: flex;
+flex-direction: row;
+justify-content:space-between;
+border:2px solid white;
+padding: 10px 12px;
+gap: 12px;
+width: 90%;
+}
+.taskInfo{
+display: flex;
+flex-direction: column;
+
+}
+.taskActions{
+display: flex;
+flex-direction: row;
+gap: 10px;
+}
+.new{
+display: flex;
+justify-content: flex-end;
+margin-right: 30px;
+}
+
+.editBtn{
+  background-color: blue;
+  color:#f1f1f1;
+  border: 1px solid white;
+  border-radius: 4px;
+  padding: 6px 10px;
+  transition: 0.3s;
+}
+.editBtn:hover{
+  border:2px solid #666;
+  }
+.btnNew{
+  background-color: #283;
+}

@@ -1,9 +1,9 @@
-import { NewTask } from "./Form"
+import { FormTask } from "./Form";
 
-export default function New(){
+export default function NewTask(){
 return(
 <>
-<NewTask/>
+<FormTask/>
 </>
 )
 }
