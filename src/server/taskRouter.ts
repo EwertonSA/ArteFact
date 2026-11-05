@@ -4,12 +4,43 @@ import { publicProcedure, router } from "./trpc";
 import { tasks } from "./database";
 
 export const TaskRouter=router({
-show:publicProcedure.query(()=>{
-return tasks
+show:publicProcedure.input(z.object({limit: z.number().min(1).max(50).default(10), 
+cursor: z.number().optional().nullable(),})).query(async({input})=>{
+const {limit,cursor}=input
+let startIndex = 0
+if (cursor) {
+const cursorIndex = tasks.findIndex((task) => task.id === cursor);
+if (cursorIndex !== -1) {
+startIndex = cursorIndex + 1
+}
+}
+const fetchedTasks = tasks.slice(startIndex, startIndex + limit + 1);
+let nextCursor: number | null = null
+if (fetchedTasks.length > limit) {
+fetchedTasks.pop()
+const lastItem = fetchedTasks[fetchedTasks.length - 1]
+nextCursor = lastItem ? lastItem.id : null
+}
+const serializedTasks = fetchedTasks.map((task) => ({
+...task,
+createdAt: task.createdAt instanceof Date ? task.createdAt.toISOString() : task.createdAt,
+updatedAt: task.updatedAt instanceof Date ? task.updatedAt.toISOString() : task.updatedAt,
+}));
+
+return {
+tasks: serializedTasks,
+nextCursor,
+};
 }),
+
 getById:publicProcedure.input(z.object({id:z.number()})).query(({input})=>{
 const task=tasks.find((task)=>task.id===input.id)
-return task||null
+if (!task) return null
+return {
+...task,
+createdAt: task.createdAt instanceof Date ? task.createdAt.toISOString() : task.createdAt,
+updatedAt: task.updatedAt instanceof Date ? task.updatedAt.toISOString() : task.updatedAt,
+}
 }),
 create:publicProcedure.input(taskSCreationSchema).mutation(({input})=>{
 const now=new Date()
@@ -20,16 +51,13 @@ tasks.push(newTask)
 return newTask
 }),
 update:publicProcedure.input(z.object({id:z.number(),data:taskUpdateSchema})).mutation(({input})=>{
-console.log("=== ENTRARAM OS DADOS NO UPDATE DO TRPC ===", input)
 const index=tasks.findIndex(task=>task.id===input.id)
-console.log("Índice encontrado:", index);
 if(index===-1)throw new Error('Task not found')
 tasks[index]={
 ...tasks[index],
 ...input.data,
 updatedAt:new Date()
 }
-console.log("Tarefa atualizada com sucesso:", tasks[index]);
 return tasks[index]
 }),
 delete:publicProcedure.input(z.object({id:z.number()})).mutation(({input})=>{

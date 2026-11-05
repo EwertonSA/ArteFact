@@ -3,10 +3,14 @@ import React, { useState } from "react"
 import { taskAction } from "./taskAction"
 import { useRouter } from "next/navigation"
 import styles from './styles.module.css'
-export interface TaskPros{
-initialData?:{id:number,title:string,description:string}
+import { inferRouterOutputs } from "@trpc/server"
+import { AppRouter } from "@/server/root"
+type RouterOutput = inferRouterOutputs<AppRouter>;
+type TaskItem = RouterOutput["task"]["getById"]
+export interface TaskProps{
+initialData?:TaskItem
 }
-export  const FormTask=({initialData}:TaskPros)=>{
+export  const FormTask=({initialData}:TaskProps)=>{
 const [title,setTitle]=useState(initialData?.title||'')
 const [description,setDescription]=useState(initialData?.description||'')
 const [message,setMessage]=useState<string|null>(null)
